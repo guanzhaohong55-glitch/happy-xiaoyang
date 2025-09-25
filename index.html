@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>给小央妹妹的祝福</title>
+  <meta name="description" content="祝小央妹妹天天开心" />
+  <style>
+    :root { --bg:#f6f7fb; --card:#ffffff; --shadow:0 10px 30px rgba(0,0,0,.08); }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;
+           background: var(--bg); display:flex; min-height:100vh; align-items:center; justify-content:center; padding:24px; }
+    .card { background:var(--card); border-radius:22px; box-shadow:var(--shadow); padding:48px 40px; text-align:center; max-width:720px; width:100%; }
+    h1 { margin:0 0 12px; font-size:34px; line-height:1.25; }
+    p.lead { margin:0; font-size:18px; color:#444; }
+    .footer { margin-top:20px; font-size:14px; color:#888; }
+    .confetti { position:fixed; inset:0; pointer-events:none; }
+    button.share { margin-top:24px; border:0; background:#111; color:#fff; padding:10px 14px; border-radius:12px; cursor:pointer; font-size:14px; }
+    button.share:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti"></canvas>
+  <div class="card">
+    <h1>🎉 祝小央妹妹天天开心 🎉</h1>
+    <p class="lead">愿每一天都被温柔对待，笑容常在！</p>
+    <button class="share" id="shareBtn">复制此页面链接</button>
+    <div class="footer">— 静态网页，可直接部署到 GitHub Pages / Netlify</div>
+  </div>
+  <script>
+    // 轻量彩带效果
+    const c=document.getElementById('confetti'); const ctx=c.getContext('2d');
+    let W,H,parts=[]; function resize(){W= c.width = innerWidth; H = c.height = innerHeight;}
+    addEventListener('resize', resize); resize();
+    function spawn(n=120){for(let i=0;i<n;i++){parts.push({x:Math.random()*W,y:Math.random()*-H,
+      r:4+Math.random()*6, vx:-1+Math.random()*2, vy:1+Math.random()*3, a:Math.random()*Math.PI})})}
+    function loop(){ctx.clearRect(0,0,W,H); ctx.save(); parts.forEach(p=>{p.x+=p.vx; p.y+=p.vy; p.a+=0.05;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.globalAlpha=0.7; ctx.fillStyle=`hsl(${(p.a*60)%360} 90% 60%)`; ctx.fill();
+      if(p.y>H+10) {p.y=-10; p.x=Math.random()*W;} }); ctx.restore(); requestAnimationFrame(loop)}
+    spawn(); loop();
+    // 复制链接
+    document.getElementById('shareBtn').onclick = async () => {
+      try { await navigator.clipboard.writeText(location.href); alert('已复制本页链接'); }
+      catch { alert('复制失败，请手动复制地址栏链接'); }
+    };
+  </script>
+</body>
+</html>
